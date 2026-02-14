@@ -64,7 +64,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
         echo "✅ Generated secure MongoDB password: $MONGO_PASSWORD"
         echo "⚠️  IMPORTANT: Save this password securely! You'll need it to access MongoDB."
         echo "              Password is displayed above and stored in memory for this session."
-        echo "              It will be lost when the script exits or terminal closes."
+        echo "              It will be lost when the script exits or the terminal closes."
         echo ""
     fi
     

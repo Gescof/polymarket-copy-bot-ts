@@ -349,7 +349,7 @@ export MONGO_PASSWORD='your_secure_password'
 docker compose -f docker-compose.example.yml up -d
 
 # Alternative: Use .env file for better security (recommended)
-# Create or overwrite .env.local file
+# Create or overwrite .env.local file (use '>' to overwrite, '>>' to append)
 echo "MONGO_PASSWORD=your_secure_password" > .env.local
 docker compose -f docker-compose.example.yml --env-file .env.local up -d
 
