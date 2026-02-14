@@ -54,13 +54,21 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "🐳 Using docker-compose.example.yml with local MongoDB..."
     COMPOSE_FILE="docker-compose.example.yml"
     
-    # Ask for MongoDB password
-    read -sp "Enter MongoDB password (or press Enter for default 'changeme'): " MONGO_PASSWORD
+    # Generate a random password if not provided
+    read -sp "Enter MongoDB password (or press Enter to generate a secure random password): " MONGO_PASSWORD
     echo ""
     
     if [ -z "$MONGO_PASSWORD" ]; then
-        MONGO_PASSWORD="changeme"
+        # Generate a secure random password
+        MONGO_PASSWORD=$(LC_ALL=C tr -dc 'A-Za-z0-9!@#$%^&*' </dev/urandom | head -c 32)
+        echo "✅ Generated secure MongoDB password: $MONGO_PASSWORD"
+        echo "⚠️  IMPORTANT: Save this password! You'll need it to access MongoDB."
+        echo ""
     fi
+    
+    echo "⚠️  NOTE: This MongoDB instance is for LOCAL TESTING only."
+    echo "         For production, use a managed service like MongoDB Atlas."
+    echo ""
     
     export MONGO_PASSWORD
 else

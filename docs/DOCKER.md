@@ -4,9 +4,10 @@ This guide explains how to run the Polymarket Copy Trading Bot using Docker and 
 
 ## Prerequisites
 
-- [Docker](https://docs.docker.com/get-docker/) (version 20.10 or later)
-- [Docker Compose](https://docs.docker.com/compose/install/) (version 1.29 or later)
+- [Docker](https://docs.docker.com/get-docker/) (version 20.10 or later with Compose V2)
 - A configured `.env` file (copy from `.env.example` and fill in your settings)
+
+> **Note:** Modern Docker installations (Docker Desktop, Docker Engine 20.10+) include Docker Compose V2 by default. This guide uses the `docker compose` command (V2 syntax).
 
 ## Quick Start
 
@@ -334,49 +335,26 @@ docker compose up -d
 
 ## Advanced Configuration
 
-### Multi-Container Setup
+### Multi-Container Setup with Local MongoDB
 
-If you want to run MongoDB in a container alongside the bot, create a `docker-compose.full.yml`:
+The repository includes `docker-compose.example.yml` which provides a complete setup with MongoDB:
 
-```yaml
-services:
-  mongodb:
-    image: mongo:7
-    container_name: polymarket-mongodb
-    restart: unless-stopped
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: secure_password
-    volumes:
-      - mongodb_data:/data/db
-    networks:
-      - polymarket-network
+```bash
+# Start both bot and MongoDB
+docker compose -f docker-compose.example.yml up -d
 
-  polymarket-bot:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: polymarket-copy-bot
-    restart: unless-stopped
-    env_file:
-      - .env
-    depends_on:
-      - mongodb
-    networks:
-      - polymarket-network
-
-volumes:
-  mongodb_data:
-
-networks:
-  polymarket-network:
-    driver: bridge
+# The MongoDB connection is automatically configured
+# You can customize the MongoDB password via MONGO_PASSWORD env var
+MONGO_PASSWORD=your_secure_password docker compose -f docker-compose.example.yml up -d
 ```
 
-Update `MONGO_URI` in `.env`:
-```
-MONGO_URI=mongodb://admin:secure_password@mongodb:27017/polymarket?authSource=admin
-```
+The example file includes:
+- MongoDB 7 with authentication
+- Persistent data volumes
+- Health checks and proper service dependencies
+- Automatic connection configuration
+
+For production use, consider using a managed MongoDB service like MongoDB Atlas instead of running MongoDB in a container.
 
 ### Custom Build Arguments
 
