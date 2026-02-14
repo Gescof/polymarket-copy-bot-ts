@@ -339,8 +339,6 @@ docker compose up -d
 If you want to run MongoDB in a container alongside the bot, create a `docker-compose.full.yml`:
 
 ```yaml
-version: '3.8'
-
 services:
   mongodb:
     image: mongo:7
