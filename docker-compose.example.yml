@@ -65,16 +65,6 @@ services:
     #   - ./simulation_results:/app/simulation_results
     #   - ./trader_data_cache:/app/trader_data_cache
     
-    # Resource limits
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 512M
-        reservations:
-          cpus: '0.5'
-          memory: 256M
-    
     # Logging configuration
     logging:
       driver: "json-file"

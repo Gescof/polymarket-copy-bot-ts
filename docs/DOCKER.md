@@ -203,21 +203,6 @@ docker compose -f docker-compose.dev.yml exec polymarket-bot-dev npm run check-s
 
 ## Configuration
 
-### Resource Limits
-
-The `docker-compose.yml` file includes resource limits. Adjust these based on your system:
-
-```yaml
-deploy:
-  resources:
-    limits:
-      cpus: '1.0'      # Maximum CPU cores
-      memory: 512M     # Maximum memory
-    reservations:
-      cpus: '0.5'      # Minimum CPU cores
-      memory: 256M     # Minimum memory
-```
-
 ### Persistent Data
 
 To persist logs and data, uncomment the volume mounts in `docker-compose.yml`:
@@ -262,14 +247,13 @@ network_mode: host
 
 ### Memory Issues
 
-If the bot runs out of memory, increase the memory limit:
+If the bot runs out of memory, you can monitor container memory usage with:
 
-```yaml
-deploy:
-  resources:
-    limits:
-      memory: 1G  # Increase to 1GB
+```bash
+docker stats polymarket-copy-bot
 ```
+
+Consider optimizing your code or running on a system with more available memory.
 
 ### Database Connection Issues
 
@@ -317,8 +301,7 @@ docker run -d \
 2. **Use Docker secrets** for sensitive data in production
 3. **Consider running as non-root user** - Add USER directive in Dockerfile for enhanced security
 4. **Keep base images updated** - Rebuild regularly with latest Node.js
-5. **Limit resources** - Use appropriate CPU and memory limits
-6. **Enable logging** - Monitor container logs for issues
+5. **Enable logging** - Monitor container logs for issues
 
 ### Automated Restarts
 

@@ -19,16 +19,6 @@ services:
     #   # If you want to keep trader data cache persistent
     #   - ./trader_data_cache:/app/trader_data_cache
     
-    # Resource limits (adjust based on your needs)
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 512M
-        reservations:
-          cpus: '0.5'
-          memory: 256M
-    
     # Logging configuration
     logging:
       driver: "json-file"
