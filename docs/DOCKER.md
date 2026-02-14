@@ -348,9 +348,13 @@ The repository includes `docker-compose.example.yml` which provides a complete s
 export MONGO_PASSWORD='your_secure_password'
 docker compose -f docker-compose.example.yml up -d
 
-# Alternative: Use .env file for better security
-echo "MONGO_PASSWORD=your_secure_password" >> .env.local
+# Alternative: Use .env file for better security (recommended)
+# Create or overwrite .env.local file
+echo "MONGO_PASSWORD=your_secure_password" > .env.local
 docker compose -f docker-compose.example.yml --env-file .env.local up -d
+
+# Don't forget to add .env.local to .gitignore
+echo ".env.local" >> .gitignore
 ```
 
 **Security Note:** Passing passwords on the command line exposes them in shell history and process listings. For better security:

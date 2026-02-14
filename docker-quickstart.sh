@@ -63,7 +63,8 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
         MONGO_PASSWORD=$(LC_ALL=C tr -dc 'A-Za-z0-9' </dev/urandom | head -c 32)
         echo "✅ Generated secure MongoDB password: $MONGO_PASSWORD"
         echo "⚠️  IMPORTANT: Save this password securely! You'll need it to access MongoDB."
-        echo "              Password is only shown once and stored in environment variable."
+        echo "              Password is displayed above and stored in memory for this session."
+        echo "              It will be lost when the script exits or terminal closes."
         echo ""
     fi
     
