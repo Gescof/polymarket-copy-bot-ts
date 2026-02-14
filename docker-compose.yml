@@ -1,0 +1,46 @@
+services:
+  polymarket-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: polymarket-copy-bot
+    restart: unless-stopped
+    
+    # Environment variables from .env file
+    env_file:
+      - .env
+    
+    # Volumes for persistent data (uncomment as needed)
+    # volumes:
+    #   # Logs directory (optional - uncomment if you want persistent logs)
+    #   - ./logs:/app/logs
+    #   # If you want to keep simulation results persistent
+    #   - ./simulation_results:/app/simulation_results
+    #   # If you want to keep trader data cache persistent
+    #   - ./trader_data_cache:/app/trader_data_cache
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "node", "dist/scripts/healthCheck.js"]
+      interval: 60s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+    
+    # Network mode (use host network if you have connectivity issues)
+    # network_mode: host
+    
+    # Or use a custom network
+    networks:
+      - polymarket-network
+
+networks:
+  polymarket-network:
+    driver: bridge
