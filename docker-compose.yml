@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   polymarket-bot:
     build:
@@ -12,16 +10,14 @@ services:
     env_file:
       - .env
     
-    # Volumes for persistent data
-    volumes:
-      # Logs directory (optional - uncomment if you want persistent logs)
-      # - ./logs:/app/logs
-      
-      # If you want to keep simulation results persistent
-      # - ./simulation_results:/app/simulation_results
-      
-      # If you want to keep trader data cache persistent
-      # - ./trader_data_cache:/app/trader_data_cache
+    # Volumes for persistent data (uncomment as needed)
+    # volumes:
+    #   # Logs directory (optional - uncomment if you want persistent logs)
+    #   - ./logs:/app/logs
+    #   # If you want to keep simulation results persistent
+    #   - ./simulation_results:/app/simulation_results
+    #   # If you want to keep trader data cache persistent
+    #   - ./trader_data_cache:/app/trader_data_cache
     
     # Resource limits (adjust based on your needs)
     deploy:

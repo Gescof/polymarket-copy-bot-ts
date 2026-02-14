@@ -1,5 +1,3 @@
-version: '3.8'
-
 # Development Docker Compose configuration
 # This setup is optimized for development with hot reloading
 
