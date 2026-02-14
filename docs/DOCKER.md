@@ -124,58 +124,58 @@ The repository includes several Docker-related files:
 
 ```bash
 # Build the Docker image
-docker-compose build
+docker compose build
 
 # Build without cache (clean build)
-docker-compose build --no-cache
+docker compose build --no-cache
 
 # Build a specific service
-docker-compose build polymarket-bot
+docker compose build polymarket-bot
 ```
 
 ### Running
 
 ```bash
 # Start containers in detached mode
-docker-compose up -d
+docker compose up -d
 
 # Start containers in foreground
-docker-compose up
+docker compose up
 
 # Start and rebuild if needed
-docker-compose up -d --build
+docker compose up -d --build
 
 # Restart the bot
-docker-compose restart
+docker compose restart
 ```
 
 ### Logs and Monitoring
 
 ```bash
 # View all logs
-docker-compose logs
+docker compose logs
 
 # Follow logs (real-time)
-docker-compose logs -f
+docker compose logs -f
 
 # View last 100 lines
-docker-compose logs --tail=100
+docker compose logs --tail=100
 
 # View logs for specific service
-docker-compose logs polymarket-bot
+docker compose logs polymarket-bot
 ```
 
 ### Stopping and Cleaning
 
 ```bash
 # Stop containers
-docker-compose stop
+docker compose stop
 
 # Stop and remove containers
-docker-compose down
+docker compose down
 
 # Stop, remove containers, and remove volumes
-docker-compose down -v
+docker compose down -v
 
 # Remove unused images
 docker image prune -a
@@ -185,13 +185,13 @@ docker image prune -a
 
 ```bash
 # Run health check
-docker-compose exec polymarket-bot npm run health-check
+docker compose exec polymarket-bot npm run health-check
 
 # Access container shell
-docker-compose exec polymarket-bot sh
+docker compose exec polymarket-bot sh
 
 # Run a script inside container
-docker-compose exec polymarket-bot npm run check-stats
+docker compose exec polymarket-bot npm run check-stats
 ```
 
 ## Configuration
@@ -236,7 +236,7 @@ docker inspect --format='{{.State.Health.Status}}' polymarket-copy-bot
 
 1. Check logs:
    ```bash
-   docker-compose logs polymarket-bot
+   docker compose logs polymarket-bot
    ```
 
 2. Verify `.env` file is configured correctly
@@ -273,7 +273,7 @@ deploy:
 ### Viewing Environment Variables
 
 ```bash
-docker-compose exec polymarket-bot env
+docker compose exec polymarket-bot env
 ```
 
 ### Rebuilding After Changes
@@ -281,9 +281,9 @@ docker-compose exec polymarket-bot env
 After making changes to the code or Dockerfile:
 
 ```bash
-docker-compose down
-docker-compose build --no-cache
-docker-compose up -d
+docker compose down
+docker compose build --no-cache
+docker compose up -d
 ```
 
 ## Production Deployment
@@ -327,9 +327,9 @@ The bot is configured with `restart: unless-stopped`, which means:
 git pull
 
 # Rebuild and restart
-docker-compose down
-docker-compose build --no-cache
-docker-compose up -d
+docker compose down
+docker compose build --no-cache
+docker compose up -d
 ```
 
 ## Advanced Configuration
@@ -394,7 +394,7 @@ docker build \
 
 For issues or questions:
 - Check the [main README](../README.md)
-- Review logs: `docker-compose logs -f`
+- Review logs: `docker compose logs -f`
 - Contact via Discord: `jonathansharpes`
 
 ## License
