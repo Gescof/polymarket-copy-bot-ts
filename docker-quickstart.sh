@@ -59,15 +59,19 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo ""
     
     if [ -z "$MONGO_PASSWORD" ]; then
-        # Generate a secure random password
-        MONGO_PASSWORD=$(LC_ALL=C tr -dc 'A-Za-z0-9!@#$%^&*' </dev/urandom | head -c 32)
+        # Generate a secure random password (alphanumeric only to avoid shell escaping issues)
+        MONGO_PASSWORD=$(LC_ALL=C tr -dc 'A-Za-z0-9' </dev/urandom | head -c 32)
         echo "✅ Generated secure MongoDB password: $MONGO_PASSWORD"
-        echo "⚠️  IMPORTANT: Save this password! You'll need it to access MongoDB."
+        echo "⚠️  IMPORTANT: Save this password securely! You'll need it to access MongoDB."
+        echo "              Password is only shown once and stored in environment variable."
         echo ""
     fi
     
-    echo "⚠️  NOTE: This MongoDB instance is for LOCAL TESTING only."
-    echo "         For production, use a managed service like MongoDB Atlas."
+    echo "⚠️  SECURITY NOTES:"
+    echo "    - This MongoDB instance is for LOCAL TESTING only"
+    echo "    - For production, use a managed service like MongoDB Atlas"
+    echo "    - Password is stored in environment variable for this session only"
+    echo "    - Consider using Docker secrets for production deployments"
     echo ""
     
     export MONGO_PASSWORD

@@ -340,13 +340,24 @@ docker compose up -d
 The repository includes `docker-compose.example.yml` which provides a complete setup with MongoDB:
 
 ```bash
-# Start both bot and MongoDB
+# Recommended: Use the quick-start script (auto-generates secure password)
+./docker-quickstart.sh
+
+# Or set password via environment variable
+# WARNING: Command-line passwords may be visible in shell history
+export MONGO_PASSWORD='your_secure_password'
 docker compose -f docker-compose.example.yml up -d
 
-# The MongoDB connection is automatically configured
-# You can customize the MongoDB password via MONGO_PASSWORD env var
-MONGO_PASSWORD=your_secure_password docker compose -f docker-compose.example.yml up -d
+# Alternative: Use .env file for better security
+echo "MONGO_PASSWORD=your_secure_password" >> .env.local
+docker compose -f docker-compose.example.yml --env-file .env.local up -d
 ```
+
+**Security Note:** Passing passwords on the command line exposes them in shell history and process listings. For better security:
+1. Use `docker-quickstart.sh` which handles passwords securely
+2. Store passwords in a `.env` file (add to .gitignore)
+3. Use Docker secrets in production environments
+4. Use managed MongoDB services (MongoDB Atlas) for production
 
 The example file includes:
 - MongoDB 7.0.15 (pinned version) with authentication
