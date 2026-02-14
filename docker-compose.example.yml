@@ -9,9 +9,12 @@ services:
     restart: unless-stopped
     
     # MongoDB authentication
+    # IMPORTANT: Set MONGO_PASSWORD environment variable before running
+    # Example: MONGO_PASSWORD=your_secure_password docker compose -f docker-compose.example.yml up -d
+    # Or use docker-quickstart.sh which auto-generates a secure password
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-changeme}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?MONGO_PASSWORD environment variable is required. Set it or use docker-quickstart.sh}
       MONGO_INITDB_DATABASE: polymarket
     
     # Persistent storage for database
@@ -52,8 +55,9 @@ services:
       - .env
     
     # Override MONGO_URI to use local MongoDB
+    # IMPORTANT: MONGO_PASSWORD environment variable is required
     environment:
-      MONGO_URI: mongodb://admin:${MONGO_PASSWORD:-changeme}@mongodb:27017/polymarket?authSource=admin
+      MONGO_URI: mongodb://admin:${MONGO_PASSWORD:?MONGO_PASSWORD environment variable is required}@mongodb:27017/polymarket?authSource=admin
     
     # Volumes for persistent data (uncomment as needed)
     # volumes:

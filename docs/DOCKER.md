@@ -349,10 +349,11 @@ MONGO_PASSWORD=your_secure_password docker compose -f docker-compose.example.yml
 ```
 
 The example file includes:
-- MongoDB 7 with authentication
+- MongoDB 7.0.15 (pinned version) with authentication
 - Persistent data volumes
 - Health checks and proper service dependencies
 - Automatic connection configuration
+- Required password (no insecure defaults)
 
 For production use, consider using a managed MongoDB service like MongoDB Atlas instead of running MongoDB in a container.
 
