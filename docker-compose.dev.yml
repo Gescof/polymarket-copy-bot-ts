@@ -1,5 +1,5 @@
 # Development Docker Compose configuration
-# This setup is optimized for development with hot reloading
+# This setup is optimized for development with source code mounting
 
 services:
   polymarket-bot-dev:
@@ -13,7 +13,7 @@ services:
     env_file:
       - .env
     
-    # Mount source code for hot reloading
+    # Mount source code for live editing
     volumes:
       - ./src:/app/src:ro
       - ./tsconfig.json:/app/tsconfig.json:ro
@@ -23,7 +23,7 @@ services:
       # Don't mount node_modules (use container's version)
       - /app/node_modules
     
-    # Development command (uses ts-node for hot reloading)
+    # Development command (uses ts-node - restart container to see changes)
     command: npm run dev
     
     # Resource limits

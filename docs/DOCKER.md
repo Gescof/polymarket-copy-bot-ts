@@ -80,7 +80,7 @@ docker compose -f docker-compose.example.yml down
 
 #### Development Mode
 
-For development with hot reloading:
+For development with source code mounting:
 
 ```bash
 # Build and start in development mode
@@ -88,6 +88,9 @@ docker compose -f docker-compose.dev.yml up --build
 
 # Stop the development container
 docker compose -f docker-compose.dev.yml down
+
+# Note: Changes to source code require container restart to take effect
+docker compose -f docker-compose.dev.yml restart
 ```
 
 ### 3. Monitor the Bot
@@ -114,7 +117,7 @@ The repository includes several Docker-related files:
 - **`Dockerfile`** - Production-optimized multi-stage build
 - **`Dockerfile.dev`** - Development image with all dev dependencies
 - **`docker-compose.yml`** - Standard deployment (you provide MongoDB)
-- **`docker-compose.dev.yml`** - Development setup with hot reloading
+- **`docker-compose.dev.yml`** - Development setup with source code mounting
 - **`docker-compose.example.yml`** - Full stack with local MongoDB
 - **`docker-quickstart.sh`** - Interactive setup script
 - **`.dockerignore`** - Files excluded from Docker build
@@ -185,14 +188,17 @@ docker image prune -a
 ### Executing Commands
 
 ```bash
-# Run health check
-docker compose exec polymarket-bot npm run health-check
+# Run health check (production container - using compiled code)
+docker compose exec polymarket-bot node dist/scripts/healthCheck.js
 
 # Access container shell
 docker compose exec polymarket-bot sh
 
-# Run a script inside container
-docker compose exec polymarket-bot npm run check-stats
+# Note: Most scripts require ts-node and are only available in the dev container
+# For production container, only compiled scripts in dist/ are available
+
+# In development container with ts-node:
+docker compose -f docker-compose.dev.yml exec polymarket-bot-dev npm run check-stats
 ```
 
 ## Configuration
@@ -309,7 +315,7 @@ docker run -d \
 
 1. **Never commit `.env` file** - It contains sensitive credentials
 2. **Use Docker secrets** for sensitive data in production
-3. **Run as non-root user** (already configured in Dockerfile)
+3. **Consider running as non-root user** - Add USER directive in Dockerfile for enhanced security
 4. **Keep base images updated** - Rebuild regularly with latest Node.js
 5. **Limit resources** - Use appropriate CPU and memory limits
 6. **Enable logging** - Monitor container logs for issues
@@ -374,13 +380,17 @@ For production use, consider using a managed MongoDB service like MongoDB Atlas 
 
 ### Custom Build Arguments
 
-You can pass build arguments during build:
+The Dockerfile currently uses a fixed Node.js version (18-alpine). If you need to customize the build, you can modify the Dockerfile directly or use tags:
 
 ```bash
-docker build \
-  --build-arg NODE_VERSION=18 \
-  -t polymarket-copy-bot:latest .
+# Build with a custom tag
+docker build -t polymarket-copy-bot:latest .
+
+# Build without cache
+docker build --no-cache -t polymarket-copy-bot:latest .
 ```
+
+To make the Node.js version configurable via build args, you would need to add `ARG NODE_VERSION=18` to the Dockerfile and use `FROM node:${NODE_VERSION}-alpine`.
 
 ## Support
 

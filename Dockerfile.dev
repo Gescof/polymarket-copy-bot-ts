@@ -1,5 +1,5 @@
 # Development Dockerfile
-# This is optimized for development with hot reloading
+# This is optimized for development with source code mounting
 
 FROM node:18-alpine
 
@@ -12,8 +12,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install all dependencies (including devDependencies)
-RUN npm ci
+# Install all dependencies (skip lifecycle scripts; we'll run postinstall after source is copied)
+RUN npm ci --ignore-scripts
 
 # Copy source code (will be overridden by volume mount in dev)
 COPY . .

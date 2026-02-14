@@ -10,11 +10,14 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install all dependencies (including devDependencies for building)
-RUN npm ci
+# Install all dependencies (skip lifecycle scripts; we'll run postinstall after source is copied)
+RUN npm ci --ignore-scripts
 
 # Copy source code
 COPY . .
+
+# Run postinstall script now that source files are available
+RUN npm run postinstall || true
 
 # Build TypeScript code
 RUN npm run build
@@ -28,13 +31,13 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm ci --only=production
+# Install only production dependencies (skip lifecycle scripts; we'll run postinstall after copying source)
+RUN npm ci --only=production --ignore-scripts
 
 # Copy built files from builder stage
 COPY --from=builder /app/dist ./dist
 
-# Copy necessary files
+# Copy necessary files for postinstall
 COPY --from=builder /app/src/scripts/postinstall.js ./src/scripts/postinstall.js
 
 # Create directory for logs (optional)
