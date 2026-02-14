@@ -10,6 +10,24 @@ This guide explains how to run the Polymarket Copy Trading Bot using Docker and 
 
 ## Quick Start
 
+### Using the Quick Start Script (Easiest)
+
+For the fastest setup, use the provided script:
+
+```bash
+# Run the quick start script
+./docker-quickstart.sh
+```
+
+The script will:
+1. Check if Docker is installed
+2. Create `.env` file if it doesn't exist
+3. Ask if you want to use local MongoDB
+4. Build and start the containers
+5. Show you how to view logs and manage the bot
+
+### Manual Setup
+
 ### 1. Configure Environment Variables
 
 Copy the example environment file and configure your settings:
@@ -32,16 +50,31 @@ Build and start the bot in production mode:
 
 ```bash
 # Build the Docker image
-docker-compose build
+docker compose build
 
 # Start the bot in detached mode
-docker-compose up -d
+docker compose up -d
 
 # View logs
-docker-compose logs -f
+docker compose logs -f
 
 # Stop the bot
-docker-compose down
+docker compose down
+```
+
+#### Production Mode with Local MongoDB
+
+If you want to run MongoDB locally alongside the bot:
+
+```bash
+# Use the example compose file that includes MongoDB
+docker compose -f docker-compose.example.yml up -d
+
+# View logs
+docker compose -f docker-compose.example.yml logs -f
+
+# Stop everything
+docker compose -f docker-compose.example.yml down
 ```
 
 #### Development Mode
@@ -50,28 +83,40 @@ For development with hot reloading:
 
 ```bash
 # Build and start in development mode
-docker-compose -f docker-compose.dev.yml up --build
+docker compose -f docker-compose.dev.yml up --build
 
 # Stop the development container
-docker-compose -f docker-compose.dev.yml down
+docker compose -f docker-compose.dev.yml down
 ```
 
 ### 3. Monitor the Bot
 
 View real-time logs:
 ```bash
-docker-compose logs -f polymarket-bot
+docker compose logs -f polymarket-bot
 ```
 
 Check bot status:
 ```bash
-docker-compose ps
+docker compose ps
 ```
 
 Check health status:
 ```bash
-docker-compose exec polymarket-bot node dist/scripts/healthCheck.js
+docker compose exec polymarket-bot node dist/scripts/healthCheck.js
 ```
+
+## Available Docker Files
+
+The repository includes several Docker-related files:
+
+- **`Dockerfile`** - Production-optimized multi-stage build
+- **`Dockerfile.dev`** - Development image with all dev dependencies
+- **`docker-compose.yml`** - Standard deployment (you provide MongoDB)
+- **`docker-compose.dev.yml`** - Development setup with hot reloading
+- **`docker-compose.example.yml`** - Full stack with local MongoDB
+- **`docker-quickstart.sh`** - Interactive setup script
+- **`.dockerignore`** - Files excluded from Docker build
 
 ## Docker Commands Reference
 
