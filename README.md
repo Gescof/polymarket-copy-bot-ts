@@ -37,7 +37,28 @@ git clone https://github.com/JonathanSharpes/polymarket-copy-bot-ts
 cd polymarket-copy-bot-ts
 ```
 
-#### Install dependencies
+#### Option 1: Docker (Recommended)
+
+Docker provides the easiest and most consistent setup experience:
+
+```bash
+# Copy the example config
+cp .env.example .env
+
+# Edit .env with your settings (see configuration below)
+
+# Build and start with Docker Compose
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+```
+
+**📖 For complete Docker instructions, see [Docker Guide](./docs/DOCKER.md)**
+
+#### Option 2: Local Installation
+
+##### Install dependencies
 ```bash
 npm install
 ```
@@ -72,7 +93,7 @@ CLOB_WS_URL = 'wss://ws-subscriptions-clob.polymarket.com/ws'
 USDC_CONTRACT_ADDRESS = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'
 ```
 
-#### Build and start
+##### Build and start
 ```bash
 npm run build
 npm run health-check  # Verify configuration
@@ -124,6 +145,7 @@ The bot currently uses the **Polymarket Data API** to monitor trader activity an
 ### Getting Started
 - **[🚀 Getting Started Guide](./docs/GETTING_STARTED.md)** - Complete beginner's guide
 - **[⚡ Quick Start](./docs/QUICK_START.md)** - Fast setup for experienced users
+- **[🐳 Docker Guide](./docs/DOCKER.md)** - Docker and Docker Compose deployment
 
 ## License
 

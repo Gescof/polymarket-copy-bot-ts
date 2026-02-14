@@ -1,0 +1,54 @@
+version: '3.8'
+
+# Development Docker Compose configuration
+# This setup is optimized for development with hot reloading
+
+services:
+  polymarket-bot-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: polymarket-copy-bot-dev
+    restart: unless-stopped
+    
+    # Environment variables from .env file
+    env_file:
+      - .env
+    
+    # Mount source code for hot reloading
+    volumes:
+      - ./src:/app/src:ro
+      - ./tsconfig.json:/app/tsconfig.json:ro
+      - ./logs:/app/logs
+      - ./simulation_results:/app/simulation_results
+      - ./trader_data_cache:/app/trader_data_cache
+      # Don't mount node_modules (use container's version)
+      - /app/node_modules
+    
+    # Development command (uses ts-node for hot reloading)
+    command: npm run dev
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Network
+    networks:
+      - polymarket-network
+
+networks:
+  polymarket-network:
+    driver: bridge

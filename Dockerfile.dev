@@ -1,0 +1,33 @@
+# Development Dockerfile
+# This is optimized for development with hot reloading
+
+FROM node:18-alpine
+
+# Install development tools
+RUN apk add --no-cache git
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including devDependencies)
+RUN npm ci
+
+# Copy source code (will be overridden by volume mount in dev)
+COPY . .
+
+# Create directories
+RUN mkdir -p logs simulation_results trader_data_cache
+
+# Set environment to development
+ENV NODE_ENV=development
+
+# Run postinstall script
+RUN npm run postinstall || true
+
+# Expose no ports (this is a bot, not a server)
+
+# Run the application in development mode
+CMD ["npm", "run", "dev"]
